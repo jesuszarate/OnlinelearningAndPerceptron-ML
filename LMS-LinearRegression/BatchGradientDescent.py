@@ -5,99 +5,38 @@ from sklearn.datasets.samples_generator import make_regression
 import pylab
 from scipy import stats
 
-
-def Error(x, y, t0, t1, m):
-    sm = 0.0
-    for i in range(m):
-        sm += (1.0 / m) * (y[i] + x[i] * t1 + t0) ** 2
-
-    return sm
-
-
-def GradientW(x, y, w, b, m):
-    s = sum([(y[i] - w * x[i] + b) * x[i] for i in range(m)])
-    return -1 * s
-    # s = 0.0
-    # for i in range(m):
-    #     s += (y[i] - w*x[i] + b)#*x[i]
-    # return -1 * s#sum([  for i in range(m)])
-
-
-def GradientB(x, y, w, b, m):
-    s = sum([(y[i] - w * x[i] + b) for i in range(m)])
-    return -1 * s
-
-
-def Batch_Gradient_Descent(x, y, r):
-    m = x.shape[0]
-    w = np.random.random(x.shape[1])
-    b = np.random.random(x.shape[1])
-
-    # J = Error(x, y, t0, t1, m)
-    J = sum([(y[i] - b + w * x[i]) ** 2 for i in range(m)])
-
-    it = 0
-    while True:
-
-        # grad_of_0 = -1 * (1.0/m)*sum([ (y[i] -  (t1*x[i]) + t0) for i in range(m) ])
-        # grad_of_1 = #Gradient(x, y, t0, t1, m)
-        # grad_of_b = -1 * (sum([(y[i] - b + w*x[i]) for i in range(m)]))
-        # grad_of_w = -1 * (sum([(y[i] - b + w*x[i])*x[i] for i in range(m)]))
-
-        d = np.dot(w, x)
-
-        w = w - (r * grad_of_w)
-        b = b - (r * grad_of_b)
-
-        # error = Error(x, y, t0, t1, m)
-        error = sum([(y[i] - b + w * x[i]) ** 2 for i in range(m)])
-
-        if abs(J - error) <= r:
-            print('Converged, iterations: ', it, '!!!')
-            print("Converged")
-            break
-        it += 1
-        J = error
-    return b, w
-
-
-def BatchGradientDescennt(x, y, b, r, e):
+def BatchGradientDescennt(x, y, r, e):
 
     w = np.transpose(np.zeros(x.shape[1]))
     m = x.shape[0]
 
+    b = 0
+
     J = (1/2) * sum([ (y[i] - w.dot(x[i]) - b)**2 for i in range(m) ])
     counter = 0
     while True:
-        grad_w = 0.0
-        grad_b = 0.0
-        for i in range(m):
-            # my_lst_str = ','.join(map(str, x[i]))
-            # print(' &+ ({0} - {1} - {2}) * [{3}]\\\\'.format(y[i][0], wT.dot(x[i]), b, my_lst_str))
-            grad_w += (y[i] - w.dot(x[i]) - b) * x[i]
-        # print('&= {0}'.format(-1 * grad_w))
-        # print()
 
-        for i in range(m):
-            # print(' &+ ({0} - {1} - {2})\\\\'.format(y[i][0], wT.dot(x[i]), b))
-            grad_b += (y[i] - w.dot(x[i]) - b)
+        grad_w = sum([ (y[i] - w.dot(x[i])) * x[i] for i in range(m)])
+        # grad_b = sum([ (y[i] - w.dot(x[i]) - b) for i in range(m)])
+        w_t1 = w + (r * (grad_w))
+        # b_t1 = b - (r * (grad_b))
 
-        # print('&= {0}'.format(-1 * grad_b))
-        w = w - r*(-1 * grad_w)
-        b = (b - r*(-1 * grad_b))#[0]
+        # print(np.linalg.norm(w_t1 - w))
+        # print(w_t1 - w)
+        # print(e)
+        # print(np.linalg.norm(w - w_t1) <= e)
 
-        error = (1/2) * sum([ (y[i] - w.dot(x[i]) - b)**2 for i in range(m) ])
-        if np.isnan(error):
-            print()
+        # error = (1/2) * sum([ (y[i] - w_t1.dot(x[i]) - b_t1)**2 for i in range(m) ])
 
-        if counter == 912:
-            print()
-
-        if abs(J - error) <= e:
+        if np.linalg.norm(w_t1 - w) <= e:
+        # if abs(error - J) <= e:
             print('Converged after {0} runs'.format(counter))
             break
 
-        J = error
+        w = w_t1
+        # b = b_t1
+
+
         counter += 1
         print(counter)
 
@@ -107,8 +46,8 @@ def BatchGradientDescennt(x, y, b, r, e):
 
 if __name__ == '__main__':
 
-    # x, y = make_regression(n_samples=100, n_features=1, n_informative=1,
-    #                        random_state=0, noise=35)
+    x, y = make_regression(n_samples=100, n_features=1, n_informative=1,
+                           random_state=0, noise=35)
     # print ('x.shape = %s y.shape = %s' %(x.shape, y.shape))
     #
 
@@ -120,27 +59,30 @@ if __name__ == '__main__':
 
     y = np.array([[1], [4], [-1], [-2], [0]])
 
-    r = 0.01 # learning rate
+    r = 0.0625 # learning rate
     ep = 1/1000000 # convergence criteria
 
     b = 0
 
     # call gredient decent, and get intercept(=theta0) and slope(=theta1)
-    theta0, theta1 = BatchGradientDescennt(x, y, b, r, ep)#, x, y, ep, max_iter=1000)
+    theta0, theta1 = BatchGradientDescennt(x, y, r, ep)#, x, y, ep, max_iter=1000)
     print (('theta0 = %s theta1 = %s') %(theta0, theta1))
 
-    # check with scipy linear regression
-    # slope, intercept, r_value, p_value, slope_std_error = stats.linregress(x[:,0], y)
-    # print (('intercept = %s slope = %s') %(intercept, slope))
+    try:
+        # check with scipy linear regression
+        slope, intercept, r_value, p_value, slope_std_error = stats.linregress(x[:,0], y)
+        print (('intercept = %s slope = %s') %(intercept, slope))
 
-    # y_predict = 0
-    # # plot
-    # for i in range(x.shape[0]):
-    #     y_predict = theta0 + theta1*x
-    #
-    # pylab.plot(x,y,'o')
-    # pylab.plot(x,y_predict,'k-')
-    # pylab.show()
+        y_predict = 0
+        # plot
+        for i in range(x.shape[0]):
+            y_predict = theta0 + theta1*x
+
+        pylab.plot(x,y,'o')
+        pylab.plot(x,y_predict,'k-')
+        pylab.show()
+    except:
+        pass
     print ("Done!")
 
     # x = np.array([[1, -1, 2],

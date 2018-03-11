@@ -304,7 +304,7 @@ $\w^\top \x_5 = [-1, 1, -1]^\top[3, -1, -1] = -3$ \\
     &+ (-1 - 2 + 1)\\
     &+ (-2 - 5 + 1)\\
     &+ (0 + 3 + 1)\\
-    &= -10
+    &= -10 % Might not be correct
 \end{align*}
 
 %\begin{align*}
@@ -389,7 +389,7 @@ $\w^\top \x_5 = [1/2, -1/2, 1/2]^\top[3, -1, -1] = 3/2 $  \\
     &+ (-1 + 1.0 - 1)\\
     &+ (-2 + 2.5 - 1)\\
     &+ (0 - 1.5 - 1)\\
-    &= 4.5
+    &= 4.5 %might not be right
 \end{align*}
 
 %$\frac{\nabla J}{\nabla \w_1}
@@ -480,6 +480,9 @@ $b = 0.3075$\\
 Identify the maximum number of mistakes made by Halving algorithm in learning a target function from following concept classes. Please check whether the Halving algorithm is a mistake bound algorithm.
 \begin{enumerate}
 \item~[10 points] Disjunction of $n$ boolean variables.
+
+    $f(x) = x_1 \lor x_2 \lor \dots \lor x_n$
+
 \item~[10 points] Disjunction of $k$ boolean variables out of the total $n$ input variables. Note $k$ is a constant and smaller than $n$.
 \item~[10 points] $m$-of-$n$ rules. Note $m$ is a constant and smaller than $n$.
 \item~[20 points] All boolean function of $n$ input boolean variables.
@@ -490,6 +493,9 @@ Identify the maximum number of mistakes made by Halving algorithm in learning a 
 \item  Let us review the Mistake Bound Theorem discussed in our lecture.
 \begin{enumerate}
 	\item~[10 points] If we change the second assumption to be as follows: Suppose there exists a vector $\u\in \mathbb{R}^n$, and a positive $\gamma$, we have for each $(\x_i, y_i)$ in the training data, $y_i(\u^\top \x_i) \ge \gamma$. What is the upper bound for the number of mistakes made by the Perceptron algorithm?   Note that $\u$ is unnecessary to be a unit vector.
+
+
+
 	\item~[10 points] Following (a), if we do NOT assume $\u$ is a unit vector, and we still want to obtain the same upper bound introduced in the lecture, how should we change the inequalities in the second assumption?
 	\item~[20 points]  Now, let us state the second assumption in another way: Suppose there a hyperplane that can correctly separate all the positive examples from the negative examples in the data, and the margin for this hyper plane is $\gamma$. What is the upper bound for the number of mistakes made by Perceptron algorithm?
 \end{enumerate}

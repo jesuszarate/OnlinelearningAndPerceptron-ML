@@ -3,7 +3,6 @@ import random
 import sklearn
 from sklearn.datasets.samples_generator import make_regression
 import pylab
-from scipy import stats
 import pandas as pd
 
 J = []
@@ -61,11 +60,13 @@ if __name__ == '__main__':
 
     b = 0
 
-    # call gredient decent, and get intercept(=theta0) and slope(=theta1)
-    w, b = BatchGradientDescennt(x, y, r, ep)#, x, y, ep, max_iter=1000)
-    print (('w = %s b = %s') %(w, b))
+    w, b = BatchGradientDescennt(x, y, r, ep)
+    print (('w = {0}, b = {1}').format(w, b))
+    print('r = {0}'.format(r))
+    print('Final Cost Funtion = {0}'.format((1/2) * sum([ (y[i] - w.dot(x[i]) - b)**2 for i in range(x.shape[0]) ])))
 
     pylab.plot(J)
+    pylab.title('Batch Gradient Descent')
     pylab.show()
 
     print ("Done!")
